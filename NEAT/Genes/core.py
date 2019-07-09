@@ -1,5 +1,6 @@
 from .genes import Genome
 from Topology import Node
+import random
 
 def find_node_from_distilled(nodes, distilled):
     for node in nodes:
@@ -44,3 +45,44 @@ def genome_from_distilled(distilled):
     New_G.genes = genes
 
     return New_G
+
+def breed_from_distilled(genepool, distilled1, distilled2):
+
+    new_conns = []
+
+    conns1 = list(zip(*distilled1[1]))[0]
+    conns2 = list(zip(*distilled1[1]))[0]
+
+    conns1weights = list(zip(*distilled1[1]))[1]
+    conns2weights = list(zip(*distilled1[1]))[1]
+    
+    conns1innovations_dict = {genepool.innovation_table[(tuple(conn), True)]:conn for conn in conns1}
+    conns2innovations_dict = {genepool.innovation_table[(tuple(conn), True)]:conn for conn in conns2}
+
+    conns1innovations_weights_dict = {genepool.innovation_table[(tuple(conn), True)]:conn for conn in conns1}
+    conns2innovations_weights_dict = {genepool.innovation_table[(tuple(conn), True)]:conn for conn in conns2}
+
+    conns1innovations = [genepool.innovation_table[(tuple(conn), True)] for conn in conns1]
+    conns2innovations = [genepool.innovation_table[(tuple(conn), True)] for conn in conns2]
+
+    all_innovations = list(set(conns1innovations + conns2innovations))
+    
+    for innovation in all_innovations:
+        if innovation in conns1innovations and innovation in conns2innovations:
+            weight = random.choice([conns1innovations_weights_dict[innovation], conns2innovations_weights_dict[innovation]])
+            conn = conns1innovations_dict[innovation]
+            new_conns.append((conn, weight))
+        
+        elif innovation in conns1innovations:
+            weight = conns1innovations_weights_dict[innovation]
+            conn = conns1innovations_dict[innovation]
+            new_conns.append((conn, weight))
+
+    return new_conns
+
+
+
+
+
+
+    
