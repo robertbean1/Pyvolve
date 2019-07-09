@@ -1,7 +1,7 @@
 import Topology.backend as T
 import random
 
-class Structure:
+class Network:
     def __init__(self, nodes):
         self.nodes = nodes
 
@@ -12,9 +12,6 @@ class Structure:
 
         self.hidden_layers = layer_names[1:-1]
         self.layers = layer_names
-
-        self.connections = None
-        self.active_connections = None
 
     def __str__(self):
         
@@ -60,11 +57,11 @@ class Structure:
         for node in hiddens:
             paths.append(T.get_path(connections, node, [node]))
         return paths
-    
+
     def random_connections(self, density=0.5):
         # Right now these are layer to layer
         # It is neccessary to allow connections between-
-        # -any 2 layers, but only from a layer to a later layer
+        # -any 2 layers, but only from a early layer to a late layer
         conns = []
         latest = self.get_nodes('Input')        
         for layer in self.layers[1:]:
@@ -76,34 +73,24 @@ class Structure:
     def get_active_connections(self, connections):
         active_conns = []
         for input_node in self.input_nodes:
-            for path in T.get_paths(connections, input_node):
-                if path[-1].layer == 'Output':
-                    active_conns += [conn for conn in T.path_to_connections(path) if not conn in active_conns]
-                    
+            for path in T.get_paths(connections, starting_node=input_node):
+                if path[-1] == 'Output':
+                    active_conns += [conn for conn in path if not conn in active_conns]
         return active_conns
-    
+                    
+
     def build(self, connection_density=0.5):
+        
         self.connections = self.random_connections(connection_density)
         self.active_connections = self.get_active_connections(self.connections)
-
-        for conn in self.active_connections:
-            conn[0].activate()
-            conn[1].activate()
+        
         
     def get_nodes(self, layer):
-        layer_list = []
+        hidden_list = []
         for node in self.nodes:
             if node.layer == layer:
-                layer_list.append(node)
-        return layer_list
-
-    @property
-    def topological_genes(self):
-        return [[[node1.layer, node1.number], [node2.layer, node2.number]] for node1, node2 in self.active_connections]
-
-    @property
-    def is_built(self):
-        return self.connections and self.active_connections
+                hidden_list.append(node)
+        return hidden_list
     
     @property
     def hidden_nodes(self):
