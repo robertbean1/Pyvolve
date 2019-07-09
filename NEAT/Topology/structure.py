@@ -67,7 +67,7 @@ class Structure:
         # -any 2 layers, but only from a layer to a later layer
         conns = []
         latest = self.get_nodes(1)       
-        for layer in self.layers[1:]:
+        for layer in sorted(self.layers)[1:]:
             current = self.get_nodes(layer)
             conns += T.permute_link(latest, current, density)
             latest = current

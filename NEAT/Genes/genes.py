@@ -37,11 +37,15 @@ class Genome(Structure):
         return biases
 
     def mutate_add_node(self):
+        
         split = random.choice(list(enumerate(self.genes)))
         (node1, node2), weight = split[1]
-        del self.genes[split[0]]
-        
         new_layer = (node1.layer + node2.layer) / 2
+        
+        while new_layer == int(new_layer):
+            split = random.choice(list(enumerate(self.genes)))
+            (node1, node2), weight = split[1]
+            new_layer = (node1.layer + node2.layer) / 2
 
         new_node = Node(self.n_nodes + 1, new_layer)
         self.n_nodes = self.n_nodes + 1
@@ -49,10 +53,7 @@ class Genome(Structure):
 
         self.nodes.append(new_node)
         
-        for n, gene in enumerate(self.genes):
-            conn = gene[0]
-            if conn == [node1, node2]:
-                del self.genes[n]
+        del self.genes[split[0]]
         
         self.biases[new_node] = 0
         
