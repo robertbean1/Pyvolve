@@ -1,7 +1,7 @@
 from Topology import random_topology, Node, Structure
 import Topology.backend as T
 import Network.backend as N
-from Genes.backend import distill_connection
+from .backend import distill_connection
 import random, time, copy
 
 class Genome(Structure):
@@ -23,7 +23,7 @@ class Genome(Structure):
         self.disabled_genes = []
         self.n_nodes = max([conn[0].number for conn in self.active_connections] + [conn[1].number for conn in self.active_connections])
         return list(zip(self.active_connections, self.weights))
-
+        
     def random_biases(structure, mode='nonzero'):
         biases = []
         

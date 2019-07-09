@@ -17,9 +17,9 @@ class Population(Genepool):
         self.package_genome(member)
         self.members.append(member)
 
-    def generate_members(self, ancestor, size):
+    def generate_members(self, ancestor, size, *args, **kwargs):
         for _ in range(size):
-            self.members.append(ancestor.binary_fission(1, 1, 1, 1))
+            self.members.append(ancestor.binary_fission(*args, **kwargs))
 
     def adjust_fitness(self, fitness, subject_member, delta_t, c1=1, c2=1, c3=0.1):
         n = 1

@@ -1,14 +1,12 @@
-from Genes import Genome, Genepool
-from Genes.backend import *
+from Genes import Genome, Genepool, distill_genome
+from Genes.core import genome_from_distilled
 from Network import FeedForwardNetwork
 from Species import Population
 
 P = Population()
-P.generate_members(Genome(2, 2), 50)
 
-for member in P.members:
-    Net = FeedForwardNetwork(member)
-    print(Net.predict([0, 1]))
+for n in range(10):
+    P.generate_members(Genome(2, 2, 2, 1), 50)
 
 #To do - Breeding:
 #
@@ -16,8 +14,14 @@ for member in P.members:
 #
 #          _/    2) speciation
 #
-#          X     3) crossing over
+#          1/3   3) crossing over
 #
-#          ^ That's all that's left to do, and I'm done
-
-
+#             _/    a) Produce ability to build the whole Genome from only a distilled Genome
+#
+#                /  b) breeding algorithm based on http://nn.cs.utexas.edu/downloads/papers/stanley.ec02.pdf page 12, figure 4
+#             X |
+#                \  c) Genome1, Genome2 -> distilled -> breeder -> distilled -> Genome
+#       
+#             X     d) adapt the algorithm for biases
+#
+# Working at stage c if I somehow find a way to screw up and make d and c mutually exclusive
