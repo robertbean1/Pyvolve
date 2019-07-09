@@ -1,11 +1,11 @@
 import Topology.backend as T
 from Network.activations import get_activation
 
-def build_node_tree(connections, input_nodes, output_nodes):
+def build_node_tree(connections, input_nodes, output_nodes, output_layer):
     node_tree = {}
     for input_node in input_nodes:
         for path in T.get_paths(connections, input_node):
-            if path[-1].layer == 'Output':
+            if path[-1].layer == output_layer:
                 for conn in T.path_to_connections(path):
                     if not conn[-1] in node_tree:
                         node_tree[conn[-1]] = [conn[0]]

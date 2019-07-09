@@ -6,11 +6,10 @@ class FeedForwardNetwork:
     def __init__(self, genome):
         self.topology, self.weights = list(zip(*genome.genes))
         self.genome = genome
-        self.structure = genome.structure
         self.biases = self.genome.biases
 
     def compile(self):
-        self.tree = N.build_node_tree(self.topology, self.structure.input_nodes, self.structure.output_nodes)
+        self.tree = N.build_node_tree(self.topology, self.genome.input_nodes, self.genome.output_nodes, max(self.genome.layers))
 
     def predict(self, xs):
 
@@ -18,8 +17,8 @@ class FeedForwardNetwork:
         
         buildout = {}
 
-        for node in self.structure.nodes:
-            if node.layer == 'Input':
+        for node in self.genome.nodes:
+            if node.layer == 1:
                 buildout[node] = xs[node.number]
 
         buildout = N.build_activation_tree(self.genome.genes, self.biases, buildout, self.tree)
@@ -28,7 +27,7 @@ class FeedForwardNetwork:
 
         outs = []
         for node in self.node_activity:
-            if node.layer == 'Output':
+            if node.layer == max(self.genome.layers):
                 outs.append([node, self.node_activity[node]])
 
         outs = sorted(outs, key=lambda x: x[0].number)

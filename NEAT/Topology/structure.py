@@ -18,7 +18,7 @@ class Structure:
 
     def __str__(self):
         
-        out_str = 'Network('
+        out_str = 'Structure('
 
         for node in self.nodes:
             out_str += '\n\t' + str(node)
@@ -66,7 +66,7 @@ class Structure:
         # It is neccessary to allow connections between-
         # -any 2 layers, but only from a layer to a later layer
         conns = []
-        latest = self.get_nodes('Input')        
+        latest = self.get_nodes(1)       
         for layer in self.layers[1:]:
             current = self.get_nodes(layer)
             conns += T.permute_link(latest, current, density)
@@ -77,7 +77,7 @@ class Structure:
         active_conns = []
         for input_node in self.input_nodes:
             for path in T.get_paths(connections, input_node):
-                if path[-1].layer == 'Output':
+                if path[-1].layer == max(self.layers):
                     active_conns += [conn for conn in T.path_to_connections(path) if not conn in active_conns]
                     
         return active_conns
@@ -109,7 +109,7 @@ class Structure:
     def hidden_nodes(self):
         hidden_list = []
         for node in self.nodes:
-            if 'Hidden' in node.layer:
+            if 1 < node.layer and node.layer < max(self.layers):
                 hidden_list.append(node)
         return hidden_list
 
@@ -117,7 +117,7 @@ class Structure:
     def input_nodes(self):
         input_list = []
         for node in self.nodes:
-            if node.layer == 'Input':
+            if node.layer == 1:
                 input_list.append(node)
         return input_list
 
@@ -125,6 +125,6 @@ class Structure:
     def output_nodes(self):
         output_list = []
         for node in self.nodes:
-            if node.layer == 'Output':
+            if node.layer == max(self.layers):
                 output_list.append(node)
         return output_list
