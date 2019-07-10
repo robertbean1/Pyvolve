@@ -1,5 +1,5 @@
 from Genes import Genome, Genepool, distill_genome
-from Genes.core import genome_from_distilled, breed_from_distilled
+from Genes.core import breed
 from Network import FeedForwardNetwork
 from Species import Population
 
@@ -8,7 +8,8 @@ P = Population()
 for n in range(10):
     P.generate_members(Genome(2, 2, 2, 1), 50)
 
-print(breed_from_distilled(P, distill_genome(P.members[0]), distill_genome(P.members[80])))
+print(breed(P, P.members[0], P.members[10]))
+
 
 #To do - Breeding:
 #
@@ -16,7 +17,7 @@ print(breed_from_distilled(P, distill_genome(P.members[0]), distill_genome(P.mem
 #
 #          _/    2) speciation
 #
-#          1/3   3) crossing over
+#          _/    3) crossing over
 #
 #             _/    a) Produce ability to build the whole Genome from only a distilled Genome
 #
@@ -24,10 +25,8 @@ print(breed_from_distilled(P, distill_genome(P.members[0]), distill_genome(P.mem
 #             _/ |
 #                \  c) Genome1, Genome2 -> distilled -> breeder -> distilled -> Genome
 #       
-#             X     d) adapt the algorithm for biases
+#             _/    d) adapt the algorithm for biases
 #
-# Working at stage c if I somehow find a way to screw up and make d and c mutually exclusive
-# Future me: I sure did screw it up, Genes/genes.py line 161 - fix later. I need to disable biases for now.
-# Future Future me: Yeah so I did c)
-# 
-# Genome to Network parser complete
+#
+# I DID IT! Genes.core.breed takes in a genepool, two genomes, and spits out a genome. The genome is not a child instance of the two first genomes, meaning that it can freely mutate. All problems have been avoided.
+#           Also, it works with biases now too.
