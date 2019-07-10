@@ -12,6 +12,7 @@ def genome_from_distilled(distilled):
 
     nodes = distilled[0]
     genes = distilled[1]
+    
     biases = distilled[2]
 
     output_layer = max(nodes, key=lambda x: x[1])[1]
@@ -42,8 +43,8 @@ def genome_from_distilled(distilled):
     for active_conn in New_G.active_connections:
         active_conn[0].activate()
         active_conn[1].activate()
-    
-    New_G.genes = genes
+
+    New_G.genes = zip(New_G.active_connections, New_G.weights)
 
     return New_G
 

@@ -53,9 +53,7 @@ class Genome(Structure):
 
         self.nodes.append(new_node)
         
-        del self.genes[split[0]]
-        
-        self.biases[new_node] = 0
+        self.biases[new_node] = random.uniform(-1, 1)
         
         self.genes.insert(split[0], [[new_node, node2], weight])
         self.genes.insert(split[0], [[node1, new_node], 1])
@@ -63,7 +61,7 @@ class Genome(Structure):
         self.active_connections = list(zip(*self.genes))[0]
         self.weights = list(zip(*self.genes))[1]
 
-        self.disabled_genes.append([[node1, node2], weight])
+        # Disabled Genes - You'll remember what this means, if not, read the paper
 
     def mutate_add_connection(self, stop_search_threshold=20):
 

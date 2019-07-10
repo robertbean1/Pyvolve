@@ -1,15 +1,15 @@
-from Network.activations import get_activation
-import Network.backend as N
+from .activations import get_activation
+from .backend import *
 import copy
 
 class FeedForwardNetwork:
     def __init__(self, genome):
         self.topology, self.weights = list(zip(*genome.genes))
         self.genome = genome
-        self.biases = self.genome.biases
+        self.biases = genome.biases
 
     def compile(self):
-        self.tree = N.build_node_tree(self.topology, self.genome.input_nodes, self.genome.output_nodes, max(self.genome.layers))
+        self.tree = build_node_tree(self.topology, self.genome.input_nodes, self.genome.output_nodes, max(self.genome.layers))
 
     def predict(self, xs):
 
@@ -21,7 +21,7 @@ class FeedForwardNetwork:
             if node.layer == 1:
                 buildout[node] = xs[node.number]
 
-        buildout = N.build_activation_tree(self.genome.genes, self.biases, buildout, self.tree)
+        buildout = build_activation_tree(list(zip(self.topology, self.weights)), self.biases, buildout, self.tree)
 
         self.node_activity = buildout
 

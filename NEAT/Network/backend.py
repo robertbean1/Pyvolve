@@ -30,7 +30,11 @@ def build_activation_tree(topology, biases, buildout, tree={}, first=True):
                 kernel = 0
                 for prev_node in tree[node]:
                     kernel += buildout[prev_node[1]] * weight_dict[(prev_node[1], node)]
-                buildout[node] = get_activation(node.activation)(kernel + biases[node])
+                    if node in biases:
+                        buildout[node] = get_activation(node.activation)(kernel + biases[node])
+                    else: # temp fix, error due to tree building. Should still work just fine for now
+                        biases[node] = 0
+                        get_activation(node.activation)(kernel + biases[node])
 
             else:
                 complete = False
