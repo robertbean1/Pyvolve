@@ -1,5 +1,5 @@
-from Genes import Genome, Genepool
-from Genes.backend import *
+from ..Genes import Genome, Genepool
+from ..Genes.backend import *
 
 class Population(Genepool):
     def __init__(self, *args, **kwargs):

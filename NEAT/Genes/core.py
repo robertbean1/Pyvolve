@@ -1,6 +1,6 @@
 from .genes import Genome
 from .backend import distill_genome
-from Topology import Node
+from ..Topology import Node
 import random
 
 def find_node_from_distilled(nodes, distilled):

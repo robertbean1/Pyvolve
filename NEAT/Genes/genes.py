@@ -1,6 +1,6 @@
-from Topology import random_topology, Node, Structure
-import Topology.backend as T
-import Network.backend as N
+from ..Topology import random_topology, Node, Structure
+import NEAT.Topology.backend as T
+import NEAT.Network.backend as N
 from .backend import distill_connection
 import random, time, copy
 

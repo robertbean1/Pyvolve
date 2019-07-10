@@ -1,6 +1,6 @@
 from random import randint
-from Topology.node import Node
-from Topology.structure import Structure
+from .node import Node
+from .structure import Structure
 
 def random_topology(inputs, outputs, nodes_bound, layers_bound, connection_density=0.5, hidden_func='sigmoid', output_func='sigmoid'):
 

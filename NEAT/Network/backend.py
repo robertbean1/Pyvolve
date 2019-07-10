@@ -1,5 +1,5 @@
-import Topology.backend as T
-from Network.activations import get_activation
+import NEAT.Topology.backend as T
+from ..Network.activations import get_activation
 
 def build_node_tree(connections, input_nodes, output_nodes, output_layer):
     node_tree = {}

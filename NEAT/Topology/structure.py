@@ -1,4 +1,4 @@
-import Topology.backend as T
+import NEAT.Topology.backend as T
 import random
 
 class Structure:
